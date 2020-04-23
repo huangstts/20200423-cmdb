@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+
+{% block page-head-commont %}执行命令{% endblock %}
+{% block page-head-cmmont-small %} version1.0 {% endblock %}
+
+{% block con %}
+<div class="row">
+    <div class="col-md-3">
+        <a href="#" class="btn btn-primary btn-block margin-bottom">Compose</a>
+
+        {%  for inventory in inventories %}
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{ inventory.group }}</h3>
+                <div class="box-tools">
+
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            {%  for server in inventory.server.all %}
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#"><i class="fa fa-desktop"></i> {{ server.host_name }}
+                            <span class="label label-primary pull-right">{{ server.manager_ip }}</span></a></li>
+                </ul>
+            </div>
+            {% endfor %}
+            <!-- /.box-body -->
+        </div>
+        {% endfor %}
+        <!-- /. box -->
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Labels</h3>
+
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
+                </ul>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">执行 Ansible 命令</h3>
+            </div>
+            <div class="box-footer no-padding">
+                <div class="box-footer">
+                    <div class="input-group">
+                            <input type="text" name="command" placeholder="ansible  all  -m  shell  -a   'ls /tmp'" class="form-control">
+                            <span class="input-group-btn">
+                                <button id="run" type="submit" class="btn btn-primary btn-flat" 
+                                style="background-color: rgba(86, 155, 235, 0.781); border-color:  rgba(86, 155, 235, 0.781);">
+                                Send</button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">命令结果显示:</h4>
+                    </div>
+                    <li class="active"><a href="#tab_1" data-toggle="tab">终端 1</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">终端 2</a></li>
+                    <li><a href="#tab_3" data-toggle="tab">终端 3</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Dropdown <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                    <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <pre><code class="hljs bash" id = "commandResult">{{ result }}
+                                    </code></pre>
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        <pre><code class="hljs bash">史密斯
+                                    <span class="hljs-built_in">echo</span> <span class="hljs-string">"root:123456"</span>|chpasswd 
+                                    </code></pre>
+                    </div>
+                    <div class="tab-pane" id="tab_3">
+                        hhhhh
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(function () {
+        function handleTask(task_id){
+            var timer = setTimeout(function f(task_id) {
+                // 根据 task_id 获取 task 对象
+                $.getJSON(
+                    url=`/octopus/get_task/?task_id=${task_id}`,
+                    function(ret){
+                        if (ret.success){
+                            $("#commandResult").append(`<div><code >${ret.id}</code><div>`)
+                            $("#commandResult").append(`<div><code >${ret.status}</code><div>`)
+                            $("#commandResult").append(`<div><code >任务结果${ret.result.msg}</code><div>`);
+                            clearTimeout(timer);
+                        }else{
+                            $("#commandResult").append(`<div><code >${ret.id}</code><div>`);
+                            $("#commandResult").append(`<div><code >${ret.status}</code><div>`);
+                        };
+                    }
+                )
+                timer = setTimeout(f, 2000, task_id);
+              }, 2000, task_id);
+        }
+        $("#run").on("click", function () {
+
+            let command = $("#run").parent().siblings().first().val()
+            alert(command)
+            if (!command) {
+                alert("命令为空");
+                return false
+            }
+            $.ajax({
+                url: "{% url 'octopus:run' %}",
+                type: "POST",
+                data: {
+                    "command": command,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}"
+                },
+                dataType: 'json',
+                success: function (result) {
+                    $("#commandResult").empty();
+                    let task_id = result.task_id;
+                    handleTask(task_id);
+                }
+            });
+        });
+    })
+
+</script>
+{% endblock %}

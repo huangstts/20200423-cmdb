@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block site %}<li class="active"><a href="{{ request.path }}">ServersDetail</a></li>{% endblock %}
+
+{% block con %}
+
+<div class="row">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Servers Table</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-hover dataTable" role="grid"
+                                    aria-describedby="example2_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending">
+                                                主机名</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending">
+                                                资产</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending">
+                                                操作系统</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending">
+                                                系统架构</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="CSS grade: activate to sort column ascending">
+                                                系统版本</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="CSS grade: activate to sort column ascending">
+                                                内核信息</th>
+
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="CSS grade: activate to sort column ascending">
+                                                获取详情</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for server in serverList %}
+                                        <tr class="action">
+                                            <td><a
+                                                    href="{% url 'cbv:cbvserverTable' server.id %}">{{ server.host_name }}</a>
+                                            </td>
+                                            <td>{{ server.asset.cabinet.name }}</td>
+                                            <td>{{ server.os_name }}</td>
+                                            <td>{{ server.machine }}</td>
+                                            <td>{{ server.os_version }}</td>
+                                            <td>{{ server.kernel }}</td>
+
+                                            <th><a href="{% url 'cbv:cbvserverDetail' server.id %}">详情</a></th>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

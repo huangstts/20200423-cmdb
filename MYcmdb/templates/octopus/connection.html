@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+
+{% block con %}
+
+<!-- 服务器的 主机名 IP  user  port authed -->
+
+<div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">连接信息表</h3>
+
+            <div class="box-tools">
+              <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+              <tbody><tr>
+                <th>ID</th>
+                <th>服务器主机名</th>
+                <th>管理 IP</th>
+                <th>连接用户</th>
+                <th>SSHD端口</th>
+                <th>认证状态</th>
+                <th>点击推送公钥</th>
+              </tr>
+              {% for server in servers %}
+              <tr>
+                <td>{{ server.id }}</td>
+                <td>{{ server.host_name }}</td>
+                <td>{{ server.manager_ip }}</td>
+                <td>{{ server.connection.user }}</td>
+                <td><span class="btn bg-maroon btn-xs ">{{ server.connection.port }}</span></td>
+                <td>
+                    {% if server.connection.authed %}
+                        <span class="label label-success">已认证</span>
+                    {% else %}
+                        <span class="label label-warning">未认证</span>
+                    {% endif %}
+                    </td>            
+                <td>
+                  {% if server.connection.authed %}
+                  <span class="btn bg-navy btn-xs">公钥已推送</span>
+                  {% else %}
+                  <span class="label label-primary pushPubKey">推送公钥</span>
+                  {% endif %}
+                </td>
+              </tr>
+             {% endfor %}
+            </tbody></table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+        $(".pushPubKey").on("click",function(){
+            let statusTag=$(this).parent().siblings().last().children()
+            let id = $(this).parent().siblings().first().text();
+            let cli = $(this)
+            $.ajax({
+                url: "{% url 'octopus:connection' %}",
+                type: "POST",
+                data: {"server_id": id,"csrfmiddlewaretoken":"{{ csrf_token }}"},
+                dataType: 'json',
+                success: function(res){
+                    // {"status": true/false}
+                    if (res.status){
+                        alert("操作成功");
+                        statusTag.attr("class","label label-success")
+                        statusTag.text("已认证")
+                        cli.attr("class","btn bg-navy btn-xs")
+                        cli.text("公钥已推送")
+                    }else{
+                        alert("操作失败")
+                        cli.attr("class","label label-danger pushPubKey")
+                        cli.text("推送失败")
+                    }
+                }
+            })
+        })
+</script>
+
+{% endblock %}

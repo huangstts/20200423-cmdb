@@ -1,0 +1,128 @@
+                                     
+Adapter #0
+
+Enclosure Device ID: 32
+Slot Number: 0
+Enclosure position: 0
+Device Id: 0
+Sequence Number: 2
+Media Error Count: 0
+Other Error Count: 2
+Predictive Failure Count: 0
+Last Predictive Failure Event Seq Number: 0
+PD Type: SATA
+Raw Size: 931.512 GB [0x74706db0 Sectors]
+Non Coerced Size: 931.012 GB [0x74606db0 Sectors]
+Coerced Size: 931.0 GB [0x74600000 Sectors]
+Firmware state: Online, Spun Up
+SAS Address(0): 0x1221000000000000
+Connected Port Number: 0(path0) 
+Inquiry Data:             Z9AE3WLXST1000DM010-2EP102                      CC43    
+FDE Capable: Not Capable
+FDE Enable: Disable
+Secured: Unsecured
+Locked: Unlocked
+Needs EKM Attention: No
+Foreign State: None 
+Device Speed: Unknown 
+Link Speed: Unknown 
+Media Type: Hard Disk Device
+Drive Temperature : N/A
+
+
+
+Enclosure Device ID: 32
+Slot Number: 1
+Enclosure position: 0
+Device Id: 1
+Sequence Number: 2
+Media Error Count: 0
+Other Error Count: 2
+Predictive Failure Count: 0
+Last Predictive Failure Event Seq Number: 0
+PD Type: SATA
+Raw Size: 931.512 GB [0x74706db0 Sectors]
+Non Coerced Size: 931.012 GB [0x74606db0 Sectors]
+Coerced Size: 931.0 GB [0x74600000 Sectors]
+Firmware state: Online, Spun Up
+SAS Address(0): 0x1221000001000000
+Connected Port Number: 1(path0) 
+Inquiry Data:             Z9AE3WRXST1000DM010-2EP102                      CC43    
+FDE Capable: Not Capable
+FDE Enable: Disable
+Secured: Unsecured
+Locked: Unlocked
+Needs EKM Attention: No
+Foreign State: None 
+Device Speed: Unknown 
+Link Speed: Unknown 
+Media Type: Hard Disk Device
+Drive Temperature : N/A
+
+
+
+Enclosure Device ID: 32
+Slot Number: 2
+Enclosure position: 0
+Device Id: 2
+Sequence Number: 2
+Media Error Count: 0
+Other Error Count: 2
+Predictive Failure Count: 0
+Last Predictive Failure Event Seq Number: 0
+PD Type: SATA
+Raw Size: 931.512 GB [0x74706db0 Sectors]
+Non Coerced Size: 931.012 GB [0x74606db0 Sectors]
+Coerced Size: 931.0 GB [0x74600000 Sectors]
+Firmware state: Online, Spun Up
+SAS Address(0): 0x1221000002000000
+Connected Port Number: 2(path0) 
+Inquiry Data:             Z9AE1RN0ST1000DM010-2EP102                      CC43    
+FDE Capable: Not Capable
+FDE Enable: Disable
+Secured: Unsecured
+Locked: Unlocked
+Needs EKM Attention: No
+Foreign State: None 
+Device Speed: Unknown 
+Link Speed: Unknown 
+Media Type: Hard Disk Device
+Drive Temperature : N/A
+
+
+
+Enclosure Device ID: 32
+Slot Number: 3
+Enclosure position: 0
+Device Id: 3
+Sequence Number: 2
+Media Error Count: 0
+Other Error Count: 2
+Predictive Failure Count: 0
+Last Predictive Failure Event Seq Number: 0
+PD Type: SATA
+Raw Size: 931.512 GB [0x74706db0 Sectors]
+Non Coerced Size: 931.012 GB [0x74606db0 Sectors]
+Coerced Size: 931.0 GB [0x74600000 Sectors]
+Firmware state: Hotspare, Spun Up
+SAS Address(0): 0x1221000003000000
+Connected Port Number: 3(path0) 
+Inquiry Data:             Z9AE3WLGST1000DM010-2EP102                      CC43    
+FDE Capable: Not Capable
+FDE Enable: Disable
+Secured: Unsecured
+Locked: Unlocked
+Needs EKM Attention: No
+Foreign State: None 
+Device Speed: Unknown 
+Link Speed: Unknown 
+Media Type: Hard Disk Device
+Drive Temperature : N/A
+
+
+Hotspare Information: 
+Type: Dedicated, is revertible
+Array #: 0
+
+
+Exit Code: 0x00

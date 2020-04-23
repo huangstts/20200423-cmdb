@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block con %}
+<div class="row">
+    <div class="col-md-3">
+        <a href="compose.html" class="btn btn-primary btn-block margin-bottom">Compose</a>
+
+        {% for inventory in inventorys %}
+        <div class="box box-solid collapsed-box">
+            <div class="box-header with-border">
+                <input type="checkbox" name="cc" id="ch" value="{{ inventory.group }}">{{ inventory }}
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body no-padding" style="display: none;">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for server in inventory.server.all %}
+                    <li><a href="#"><i class="fa fa-circle-o text-red"></i>{{ server.manager_ip }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        {% endfor %}
+
+        <button type="button" class="btn btn-primary btn-flat" id="run">1111执行</button>
+
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">命令执行</h3>
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                        <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="box-footer">
+                    <div class="input-group">
+                        <input type="text" name="comm" placeholder="ansible all -m shell -a 'ls /tmp' "
+                            class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" id="run1">执行</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /. box -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">命令结果</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="mailbox-read-message" id="result">
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /. box -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+
+{% endblock  %}
+{% block script %}
+<script>
+    $(function () {
+        function show() {
+            obj = document.getElementsByName("cc");
+            check_val = [];
+            for (k in obj) {
+                if (obj[k].checked) {
+                    check_val.push(obj[k].value);
+                }
+                // check_val.push(obj[k].value);
+            }
+            return check_val
+            // console.log(check_val)
+            // alert(check_val);
+        };
+
+        $("#run").on("click", function () {
+            var command = show()
+            console.log(command, '__-------------__')
+            $.ajax({
+                url: "{% url 'octopus:an_api' %}",
+                type: "POST",
+                data: {
+                    "command": command,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}"
+                },
+                dataType: 'json',
+                success: function (result) {
+                    let res = result.re;
+                    console.log(res, '@@@@@@@@@@@@@@@@@');
+                    alert(res)
+                }
+            })
+        })
+
+    })
+
+
+</script>
+{% endblock %}

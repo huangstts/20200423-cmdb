@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block site %}
+<li class="active"><a href="{% url 'cbv:cbvserverList' %}">ServersDetail</a></li>
+<li class="active"><a href="{{ request.path }}">{{ server.host_name }}</a></li>{% endblock %}
+
+{% block con %}
+
+      <div class="row">
+        <div class="col-md-4">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <br>
+              <img class="profile-user-img img-responsive img-circle" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572331202155&di=a8b942d8cdf1cefc4bb2f99fa04afb2d&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F32%2F83%2F5811092f44fca_610.jpg" alt="User profile picture">
+              <h3 class="profile-username text-center">{{ server.host_name }}</h3>
+              <h3 class="profile-username text-center">{{ server.asset.get_device_type_id_display }}</h3>
+
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>操作系统</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.os_name }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>系统架构</b> <br><b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.machine }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>系统版本</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.os_version }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>内核信息</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.kernel }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>cpu名称</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.model_name }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>cpu类型</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.cpu_type }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>cpu物理颗数</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.physical_count }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>每颗cpu核心数</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.cpu_cores }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>创建时间</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.create_at }}</b>
+                </li>
+                <li class="list-group-item" style="height: 60px;" >
+                  <b>更新时间</b><br> <b class="pull-right" style="color: rgb(72, 176, 245)">{{ server.latest_date }}</b>
+                </li>
+              </ul>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+
+
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-8">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#activity" data-toggle="tab">内存</a></li>
+              <li><a href="#timeline" data-toggle="tab">硬盘</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="activity">
+                <!-- Post -->
+                <div class="post">
+                  <table class="table table-bordered table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <th>插槽</th>
+                            <th>容量</th>
+                            <th>速度</th>
+                            <th>序列号</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mem in server.memory.all %}
+                        <tr>
+
+                            <td>{{ mem.slot }}</td>
+                            <td>{{ mem.capacity }}</td>
+                            <td>{{ mem.speed }}</td>
+                            <td>{{ mem.sn}}</td>
+                            <td>{{ mem.latest_date}}</td>
+                            <td>{{ mem.create_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                  <!-- /.user-block -->
+                </div>
+    
+                <!-- /.post -->
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="timeline">
+                <!-- The timeline -->
+                <table class="table table-bordered table-hover dataTable">
+                  <thead>
+                      <tr>
+
+                          <th>插槽号</th>
+                          <th>强制磁盘容量</th>
+                          <th>原始磁盘容量</th>
+                          <th>接口类型</th>
+                          <th>创建时间</th>
+                          <th>更新时间</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for disk in server.disk.all %}
+                      <tr>
+
+                          <!--  -->
+                          <td>{{ disk.slot }}</td>
+                          <td>{{ disk.coreced }}</td>
+                          <td>{{ disk.raw }}</td>
+                          <td>{{ disk.pd }}</td>
+                          <td>{{ disk.latest_date}}</td>
+                          <td>{{ disk.create_at}}</td>
+
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+
+
+
+{% endblock %}
+
+{% block script %}
+
+
+{% endblock %}
+

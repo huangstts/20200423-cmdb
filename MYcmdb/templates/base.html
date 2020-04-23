@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>CMDB资产管理系统</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'bower_components/jvectormap/jquery-jvectormap.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="{% url 'index'%}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>H</b>st</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Huang</b>st</span>
+    </a>
+
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+
+            {% if not request.user.is_authenticated %}
+            <li class="active"><a href="{% url 'users:usersLogin' %}">登录</a></li>
+            <li class="active"><a href="{% url 'users:usersRegister' %}">注册</a></li>
+            {% else %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="{{ MEDIA_URL }}{{ request.user.avatar }}" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{ request.user.username }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="{{ MEDIA_URL }}{{ request.user.avatar }}" class="img-circle" alt="User Image">
+
+                <p>
+                  {{ request.user.username }} - Web Developer
+                  <small>Wellcome to CMDB</small>
+                </p>
+              </li>
+      
+
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="/xadmin/" class="btn btn-default btn-flat">Superuser</a>
+                </div>
+                <div class="pull-right">
+                  <a href="{% url 'users:usersLogout' %}" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          <li class="active"><a href="{% url 'users:Lockscreen' %}">锁屏</a></li>
+
+            {% endif %}
+
+          </li>
+        </ul>
+      </div>
+
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel" >
+        {% if not request.user.is_authenticated %}
+        <a href="{% url 'users:usersLogin' %}" class="btn">登录</a>
+        <a href="{% url 'users:usersRegister' %}" class="pull-right btn">注册</a>
+        {% else %}
+        <div class="pull-left image">
+          <img src="{{ MEDIA_URL }}{{ request.user.avatar }}"  class="img-circle"  alt="User Image"  >
+        </div>
+        <div class="pull-left info">
+          <p>{{ request.user.username }}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li>
+          <a href="{% url 'diagram' %}">
+            <i class="glyphicon glyphicon-sunglasses"></i> <span>数据可视化</span>
+          </a>
+        </li>
+        {% comment %} <li class="treeview">
+          <a href="#" >
+            <i class="fa fa-share"></i> 
+            <span>服务树</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul id="treeNode" class="treeview-menu">
+          </ul>
+        </li> {% endcomment %}
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-th"></i> <span>资源分布表</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+              <li><a href="{% url 'cmdb:assetslist' %}"><i class="fa fa-circle-o"></i> 资产表</a></li>
+              
+              <li><a href="{% url 'cmdb:idclist' %}"><i class="fa fa-circle-o"></i> 机房表</a></li>
+              <li><a href="{% url 'cmdb:cabinetlist' %}"><i class="fa fa-circle-o"></i> 机柜表</a></li>
+          </ul>
+        </li>
+        
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>获取详情</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'cbv:cbvassetList' %}"><i class="fa fa-circle-o"></i>资产信息</a></li>
+            <li><a href="{% url 'cbv:cbvserverList' %}"><i class="fa fa-circle-o"></i>服务器信息</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="glyphicon glyphicon-hdd"></i>
+            <span>资产信息</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'cmdb:serverslist' %}"><i class="fa fa-circle-o"></i> 服务器信息表</a></li>
+            <li><a href="{% url 'cmdb:diskslist' %}"><i class="fa fa-circle-o"></i> 硬盘信息表</a></li>
+            <li><a href="{% url 'cmdb:memoryslist' %}"><i class="fa fa-circle-o"></i> 内存信息表</a></li>
+          </ul>
+        </li>
+
+        {% comment %} <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span>Ansible自动化运维平台</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'octopus:connection' %}"><i class="fa fa-circle-o"></i>公钥认证</a></li>
+            <li><a href="{% url 'octopus:run' %}"><i class="fa fa-circle-o"></i>操作指令</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i>展示信息</a></li>
+          </ul>
+        </li> {% endcomment %}
+        <li>
+          <a href="{% url 'users:userList' %}">
+            <i class="glyphicon glyphicon-sunglasses"></i> <span>用户管理</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header" >
+      <h1>
+          {% block page-head-commont %}CMDB资产管理系统{% endblock %}
+          <small>{% block page-head-cmmont-small %} Version 2.0 {% endblock %}</small>
+        </h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        {% block site %}<li class="active"><a href="{{ request.path }}"></a></li>{% endblock %}
+      </ol>
+    </section>
+    <section class="content">
+    {% block con %}
+    {% endblock %}
+   </section>
+  </div>
+
+
+  
+</div>
+
+
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- Sparkline -->
+<script src="{% static 'bower_components/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
+<!-- jvectormap  -->
+<script src="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+<script src="{% static 'plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
+<!-- SlimScroll -->
+<script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'bower_components/chart.js/Chart.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- <script src="{% static 'dist/js/pages/dashboard2.js' %}"></script> -->
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+<script src="{% static 'js/axios.min.js' %}"></script>
+<script src="{% static 'js/vue.min.js' %}"></script>
+<script src="{% static 'js/handle-tree-menu.js' %}"></script>
+
+<script type="text/javascript">
+$(function(){
+    // 获取服务树节点数据，并展示到页面菜单中
+    $.ajax({
+    url: '/cmdb/treenode/',
+    type: 'GET',
+    dataType: 'json',
+    success: function(res){
+        // 成功后，处理数据，返回含有 ul、li树结构的标签数组
+        let treeArr = displayNode(res.results)
+        // 组合数组中的标签，并添加到当前页面上
+        $("#treeNode").html(treeArr.join(""))
+    },
+    error: function(res){
+        console.log(res)
+        // 错误时处理逻辑
+    }
+  });
+})
+</script>
+
+{% block script %}
+{% endblock %}
+
+</body>
+</html>

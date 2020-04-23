@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block site %}<li class="active"><a href="{{ request.path }}">visualization</a></li>{% endblock %}
+
+{% block con %}
+
+<div id="main" style="width: 600px;height:400px;"></div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/echarts.min.js' %}"></script>
+<script src="{% static 'js/柱状图.js' %}"></script>
+<script type="text/javascript">
+  // 基于准备好的dom，初始化echarts实例
+    $(function(){
+      $.getJSON(
+          '/dash/',
+          function(res){
+              assetPie(res)
+          }
+      )
+    })
+
+</script>
+
+{% endblock %}

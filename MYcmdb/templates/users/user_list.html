@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+
+{% block con %}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">User Management</h3>
+            </div>
+<!-- 
+            <div class="col-md-8">
+                <div class="col-md-2">
+                    <a class="btn btn-default" href="{% url 'users:userAdd' %}" role="button">Add User</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+
+                <form action="#" method="get" class="">
+
+                    <div class="input-group">
+                        <input type="text" name="mykey" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i
+                                    class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+
+
+
+                </form>
+            </div> -->
+            <div class="col-md-offset-10">
+                <a class="btn btn-success" href="{% url 'users:userAdd' %}" role="button">Add User</a>
+            </div>
+
+
+            <div class="box-body">
+                <div class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-hover dataTable" role="grid"
+                                aria-describedby="example2_info">
+                                <thead>
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1" aria-label="Browser: activate to sort column ascending">
+                                            姓名</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1" aria-label="Platform(s): activate to sort column ascending">
+                                            年龄</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1" aria-label="Platform(s): activate to sort column ascending">
+                                            操作</th>
+
+                                    </tr>
+                                </thead>
+
+
+
+                                <tbody>
+                                    {% for u in userList %}
+                                    <tr class="action">
+
+                                        <td>{{ u.username }}</td>
+                                        <td>{{ u.age }}</td>
+                                        <td>
+
+
+                                            <a href="{% url 'users:userAlter' u.id %}"><button type="button"
+                                                    class="btn btn-warning">修改</button></a>
+                                            <a href="{% url 'users:userDelete' u.id %}"><button type="button"
+                                                    class="btn btn-danger table-del">删除</button>
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

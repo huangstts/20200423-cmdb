@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block con %}
+
+<div class="row" >
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Servers Table</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12" >
+                                <table class="table table-bordered table-hover dataTable" role="grid"
+                                    aria-describedby="example2_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2"
+                                                rowspan="1" colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending">
+                                                主机名</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending">
+                                                资产</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">
+                                                操作系统</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending">
+                                                系统架构</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="CSS grade: activate to sort column ascending">
+                                                系统版本</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="CSS grade: activate to sort column ascending">
+                                                内核信息</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr class="action">
+                                        <td>{{ server.host_name }}</td>
+                                        <td>{{ server.asset.cabinet.name }}</td>
+                                        <td>{{ server.os_name }}</td>
+                                        <td>{{ server.machine }}</td>
+                                        <td>{{ server.os_version }}</td>
+                                        <td>{{ server.kernel }}</td>
+
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+<div class="row" >
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Memorys Table</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12" >
+                                <table  class="table table-bordered table-hover dataTable" role="grid"
+                                    aria-describedby="example2_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2"
+                                                rowspan="1" colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending">
+                                                插槽号</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending">
+                                                内存容量</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending">
+                                                内存类型</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">
+                                                速率</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending">
+                                                内存厂商</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="CSS grade: activate to sort column ascending">
+                                                产品序列号</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="CSS grade: activate to sort column ascending">
+                                                服务器</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for mem in server.memory.all %}
+                                      <tr class="action">
+                                        <td>{{ mem.slot }}</td>
+                                        <td>{{ mem.capacity }}</td>
+                                        <td>{{ mem.model }}</td>
+                                        <td>{{ mem.speed }}</td>
+                                        <td>{{ mem.manufacturer }}</td>
+                                        <td>{{ mem.sn }}</td>
+                                        <td>{{ mem.server.host_name }}</td>
+
+                                      </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="row" >
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Disks Table</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12" >
+                                <table  class="table table-bordered table-hover dataTable" role="grid"
+                                    aria-describedby="example2_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2"
+                                                rowspan="1" colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending">
+                                                插槽号</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending">
+                                                强制磁盘容量</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">
+                                                接口类型</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending">
+                                                原始磁盘容量</th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="CSS grade: activate to sort column ascending">
+                                                服务器</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for disk in server.disk.all %}
+                                      <tr class="action">
+                                        <td>{{ disk.slot }}</td>    
+                                        <td>{{ disk.coreced }}</td>
+                                        <td>{{ disk.pd }}</td>
+                                        <td>{{ disk.raw }}</td>
+                                        <td>{{ disk.server.host_name }}</td>
+                                      </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  
+{% endblock %}

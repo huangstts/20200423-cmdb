@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block con %}
+<div class="row">
+    <div class="col-xs-4 ">
+        <div class="box box-success ">
+            <div class="box-header with-border">
+                <h3 class="box-title">CMDB router</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                            class="fa fa-times"></i></button>
+                </div>
+                </div>
+                <p></p>
+                <div class="box-body no-padding">
+                <div class="tab-pane active" id="timeline">
+
+                    <ul class="timeline timeline-inverse">
+                        <!-- timeline time label -->
+                        <li class="time-label">
+                            <span class="bg-red">
+                                C M D B
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <li>
+                            <i class="fa fa-envelope bg-blue"></i>
+
+                            <div class="timeline-item">
+
+
+                                <h3 class="timeline-header"><a href="{% url 'cmdb:idclist' %}">IDC</a> <br>Internet Data
+                                    Center</h3>
+
+
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                        <li>
+                            <i class="fa fa-camera bg-purple"></i>
+
+                            <div class="timeline-item">
+                                <h3 class="timeline-header"><a href="{% url 'cmdb:cabinetlist' %}">Cabinet</a> <br>
+                                    Cabinets All Over
+                                    The
+                                    Country
+                                </h3>
+                            </div>
+                        </li>
+                        <!-- timeline item -->
+                        <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+
+
+                                <h3 class="timeline-header no-border"><a href="{% url 'cmdb:assetslist' %}">Assets</a>
+                                    <br> Assets List
+                                </h3>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                        <!-- timeline item -->
+                        <li>
+                            <i class="fa fa-comments bg-yellow"></i>
+
+                            <div class="timeline-item">
+                                <h3 class="timeline-header"><a href="{% url 'cmdb:serverslist' %}">Servers</a> <br> All
+                                    Servers</h3>
+                            </div>
+                        </li>
+
+                        <li>
+                            <i class="fa fa-camera bg-purple"></i>
+
+                            <div class="timeline-item">
+                                <h3 class="timeline-header"><a href="{% url 'cmdb:memoryslist' %}">Memories</a> <br>
+                                    Memory Chips</h3>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa fa-user bg-aqua"></i>
+
+                            <div class="timeline-item">
+
+
+                                <h3 class="timeline-header no-border"><a href="{% url 'cmdb:diskslist' %}">Disks</a>
+                                    <br> Hard Disk
+                                    Storage Device</h3>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                        <li>
+                            <i class="fa fa-clock-o bg-gray"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
+        
+    </div>
+
+
+
+
+
+
+
+    <div class="col-xs-8">
+        <!-- MAP & BOX PANE -->
+        <div class="box box-success ">
+            <div class="box-header with-border">
+                <h3 class="box-title">Internet Data Center</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                            class="fa fa-times"></i></button>
+                </div>
+
+            </div>
+
+            <div class="box-body no-padding">
+                <div id="container" style="height: 500px"></div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+
+        <!-- /.box -->
+
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=3.0&ak=aS242y9Efzb3swOxSvHPfWlBHFeCUuQY">
+</script>
+<script type="text/javascript" src="../static/map/InfoBox.js"></script>
+<script type="text/javascript" src="../static/map/geoCoordMap.js"></script>
+<!-- 地图！！！ -->
+<script type="text/javascript">
+    var map = new BMap.Map("container");
+    var point = new BMap.Point(105, 35);
+    //设置一个点
+    map.centerAndZoom(point, 5);
+    // 控制地图中心        
+    map.enableScrollWheelZoom(true);
+    //鼠标缩放控制大小
+
+    function markAddress(data_info, name) {
+        console.log(name)
+        var marker = new BMap.Marker(new BMap.Point(data_info[0], data_info[1]));
+
+        map.addOverlay(marker);
+        // infoBox.open(marker);
+
+        var html = `<div class="box box-primary">
+                        <div class="box-header with-border">
+                          <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                         </div>
+                         <div class="box-body">
+                          <p>${ name }</p>
+                        </div>
+                      </div>`
+
+        var infoBox = new BMapLib.InfoBox(map, html, {
+            boxStyle: {
+                width: "170px",
+                height: "80px",
+                background: "white",
+                opacity: 0.9,
+            },
+            enableAutoPan: true,
+            align: INFOBOX_AT_TOP
+        });
+        marker.addEventListener("mouseover", function (e) {
+            infoBox.open(marker)
+        });
+
+        marker.addEventListener("mouseout", function (e) {
+            infoBox.close(marker)
+        });
+    }
+
+    $.ajax({
+        url: '/cmdb/idc/',
+        type: "GET",
+        dataType: "json",
+        success: function (res) {
+            idcs = res.results
+            console.log(idcs)
+            for (i of idcs) {
+                city = i["city"]
+                console.log(i)
+                console.log(city)
+                markAddress(geoCoordMap[city], i["name"])
+            }
+        }
+    })
+</script>
+{% endblock %}

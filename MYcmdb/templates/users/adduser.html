@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+
+{% block con %}
+
+
+
+  <div class="register-box-body">
+    <p class="login-box-msg">添加用户</p>
+
+    <form action="{% url 'users:userAdd' %}" method="post" enctype="multipart/form-data" >
+      {% csrf_token %}
+      <div class="form-group has-feedback">
+        <label for="{{ form.username.id_for_label }}">用户名</label>
+        <input name="username" type="text" class="form-control" placeholder="名字"
+        value="{{ form.username.value|default:'' }}"
+        >
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <label for="{{ form.email.id_for_label }}">邮箱</label>
+        <input name="email" type="email" class="form-control" placeholder="邮箱"
+        value="{{ form.email.value|default:'' }}"
+        >
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <label for="{{ form.password.id_for_label }}">密码</label>
+        <input name="password" type="password" class="form-control" placeholder="密码"
+        value="{{ form.password.value|default:'' }}"
+        >
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label for="{{ form.mobile.id_for_label }}">手机号</label>
+        <input name="mobile" type="text" class="form-control" placeholder="手机"
+        value="{{ form.mobile.value|default:'' }}"
+        >
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        {% if form.errors.mobile %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.errors.mobile.0 }}
+        </div>
+        {% endif %}
+      </div>
+      <div class="form-group has-feedback">
+        <label for="{{ form.age.id_for_label }}">年龄</label>
+        <input name="age" type="text" class="form-control" placeholder="年龄"
+        value="{{ form.age.value|default:'' }}"
+        >
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+
+      <div class="form-group">
+        {% for radio in form.gender %}
+        <label class="radio-inline" for="{{ radio.id_for_label }}">{{ radio }}</label>
+        {% endfor %}
+      </div>
+
+      {% comment %} <div class="form-group">
+          <label for="id_avatar">头像</label>
+          <input name="avatar" type="file" class="form-control"  id="id_avatar">
+      </div> {% endcomment %}
+
+      <div class="row">
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">添加</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+
+            </div>
+            <!-- /.card -->
+
+
+
+    {% endblock %}
+    

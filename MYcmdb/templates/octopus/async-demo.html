@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block con %}
+内容
+<div class="row">
+    <div class="col-md-6 col-md-offset-3" >
+        <input type="text">
+        <span>
+            <button id="btn" class="btn  btn-success">
+                发送
+            </button>
+        </span>
+    </div>
+                <span class="input-group-btn" style="height: 50px">
+                    <button type="button" class="btn btn-success btn-flat" id="getTask">
+                        命令结果展示</button>
+                </span>
+            <div class="box-footer no-padding" id="commandResult">
+            </div>
+
+</div>
+
+
+
+{% endblock %}
+{% block script %}
+<script>
+    $(function(){
+        var task_id = ''
+        $("#btn").on("click",function(){
+            let num = $(this).parent().siblings().first().val()
+            alert(num)
+            if (!num) {
+                alert("输入为空");
+                return false
+            }
+            $.ajax({
+                url: '/octopus/async/',
+                type: "POST",
+                data: {
+                    "num": num,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                },
+                dataType: 'json',
+                success: function (ret) { 
+                    $("#commandResult").empty()
+                    task_id = ret.task_id
+                    alert(task_id)
+                 }
+
+            })
+        })
+        $("#getTask").on("click",function(){
+            $.ajax({
+                url: `/octopus/get_task/?task_id=${task_id}`,
+                type: "GET",
+                dataType: 'json',
+                success: function(task_ret){
+                    console.log(task_ret)
+                    $("#commandResult").append(
+                        `<p>${task_ret.id}</p><p>${task_ret.status}</p>`
+                    )
+                }
+
+            })
+        })
+
+    })
+
+
+</script>
+
+
+
+
+{% endblock %}
