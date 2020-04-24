@@ -1,14 +1,21 @@
 import subprocess
 class Memory():
+    # def __init__(self,debug):
+    #     self.file = 'MYcmdb/mem_info'
+    #     if debug:
+    #         self.cmd = "grep -v '^$' %s" % self.file
+    #     else:
+    #         self.cmd = "dmidecode -q -t 17|grep -v '^$' "
+    #     self.debug = debug
+
+
     def __init__(self,debug):
-        self.file = 'MYcmdb/mem_info'
-        if debug:
-            self.cmd = "grep -v '^$' %s" % self.file
-        else:
-            self.cmd = "dmidecode -q -t 17|grep -v '^$' "
+        
+        self.cmd = "dmidecode -q -t 17|grep -v '^$' "
         self.debug = debug
 
     def run_cmd(self, cmd):
+        print(cmd)
         stat, result = subprocess.getstatusoutput(cmd)
         print(stat,result)
         if not stat:
@@ -48,7 +55,7 @@ class Memory():
 
 
 if __name__ == '__main__':
-    mem_obj = Memory(debug=True)
+    mem_obj = Memory(debug=False)
     info = mem_obj.cmd_handle()
     print(info)
     # return info
