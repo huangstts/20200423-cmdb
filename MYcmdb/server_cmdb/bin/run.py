@@ -5,11 +5,8 @@ Base_dir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   #将serve
 
 sys.path.insert(0,Base_dir)     
 
-
 from core.main import  main          #导入main模块
 
 if  __name__ == "__main__":
      info=main()
-     # print(info)
-     # requests.post(url='http://127.0.0.1:9000/cmdb/asset/', json=info)
      requests.post(url='http://47.98.34.58:11223/cmdb/asset/', json=info)

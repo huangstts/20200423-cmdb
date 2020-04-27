@@ -188,11 +188,13 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>展示信息</a></li>
           </ul>
         </li> {% endcomment %}
+        {% if request.user.is_superuser %}
         <li>
           <a href="{% url 'users:userList' %}">
             <i class="glyphicon glyphicon-sunglasses"></i> <span>用户管理</span>
           </a>
         </li>
+        {% endif %}
       </ul>
     </section>
     <!-- /.sidebar -->
